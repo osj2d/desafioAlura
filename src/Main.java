@@ -1,10 +1,8 @@
-
-import com.google.gson.Gson;
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,17 +20,20 @@ public class Main {
         String json = response.body();
         String[] moviesArray = parseJsonMovies(json);
 
-        List<String> titles = parseTitles(moviesArray);
+        //List<String> titles = parseTitles(moviesArray);
         //titles.forEach(System.out::println);
 
-        List<String> urlImages = parseUrlImages(moviesArray);
+       //List<String> urlImages = parseUrlImages(moviesArray);
         //urlImages.forEach(System.out::println);
 
-        List<String> year = parseYear(moviesArray);
+        //List<String> year = parseYear(moviesArray);
         //year.forEach(System.out::println);
 
-        List<String> imbRankin = parseRating(moviesArray);
-        imbRankin.forEach(System.out::println);
+        //List<String> imbRankin = parseRating(moviesArray);
+        //imbRankin.forEach(System.out::println);
+
+        List<Filme> filmes = parseMovies(json);
+        filmes.forEach(System.out::println);
 
     }
         private static String[] parseJsonMovies(String json){
@@ -67,4 +68,21 @@ public class Main {
         private static List<String> parseRating(String[] moviesArray){
             return parseAttribute(moviesArray, 7);
         }
+
+        private static List<Filme> parseMovies(String json){
+            String[] moviesArray = parseJsonMovies(json);
+
+            List<String> titles = parseTitles(moviesArray);
+            List<String> urlImages = parseUrlImages(moviesArray);
+            List<String> imbRankin = parseRating(moviesArray);
+            List<String> year = parseYear(moviesArray);
+
+            List<Filme> filmes = new ArrayList<>(titles.size());
+
+            for (int i = 0; i < titles.size(); i++) {
+                filmes.add( new Filme(titles.get(i), urlImages.get(i), imbRankin.get(i), year.get(i)));
+            }
+            return filmes;
     }
+
+}
