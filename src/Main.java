@@ -1,3 +1,4 @@
+import java.io.PrintWriter;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -33,7 +34,12 @@ public class Main {
         //imbRankin.forEach(System.out::println);
 
         List<Filme> filmes = parseMovies(json);
-        filmes.forEach(System.out::println);
+        //filmes.forEach(System.out::println);
+
+        PrintWriter writer = new PrintWriter("Conteudo.html");
+        new HTMLGenerator(writer).generate(filmes);
+        writer.close();
+
 
     }
         private static String[] parseJsonMovies(String json){
